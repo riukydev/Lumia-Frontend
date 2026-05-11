@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Studio Lumina | Arquitetura & Interiores</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Variáveis e Reset --- */
+        :root {
+            --bg-main: #FFFFFF;
+            --bg-alt: #F7F6F2;       /* Off-white quente e sofisticado */
+            --text-dark: #2C2C2C;
+            --text-muted: #6B6B6B;
+            --accent: #B59A7A;       /* Tom de areia/madeira elegante */
+            --accent-hover: #987E60;
+            --border: #E5E5E5;
+            
+            --font-head: 'Lora', serif;
+            --font-body: 'Montserrat', sans-serif;
+            
+            --container-width: 1200px;
+            --header-height: 90px;
+            --radius: 4px; /* Bordas mais retas transmitem seriedade e arquitetura */
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background-color: var(--bg-main);
+            line-height: 1.8;
+            overflow-x: hidden;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Utilitários --- */
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 120px 0;
+        }
+
+        .section-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 60px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 36px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #FFF;
+        }
+
+        .btn-outline {
+            border-color: var(--text-dark);
+            color: var(--text-dark);
+            background: transparent;
+        }
+
+        @media (hover: hover) {
+            .btn-primary:hover {
+                background-color: var(--accent-hover);
+            }
+            .btn-outline:hover {
+                background-color: var(--text-dark);
+                color: #FFF;
+            }
+        }
+
+        /* --- Header & Nav --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            border-bottom: 1px solid transparent;
+        }
+
+        header.scrolled {
+            height: 70px;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            letter-spacing: 1px;
+            z-index: 1002;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 400;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        @media (hover: hover) {
+            .nav-list a:hover::after {
+                width: 100%;
+            }
+            .nav-list a:hover {
+                color: var(--accent);
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1002;
+        }
+
+        .bar {
+            width: 28px;
+            height: 1px;
+            background-color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 650px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-head);
+            font-size: clamp(2.5rem, 6vw, 4.2rem);
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+            font-weight: 400;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+        /* --- Serviços (Features) --- */
+        .bg-alt {
+            background-color: var(--bg-alt);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background: var(--bg-main);
+            padding: 50px 40px;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            border-color: var(--accent);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-family: var(--font-head);
+        }
+
+        .service-card h3 {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Portfólio (Galeria) --- */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius);
+            aspect-ratio: 4/5;
+            cursor: pointer;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-overlay h4 {
+            color: #FFF;
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .portfolio-overlay p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--text-dark);
+            color: #FFF;
+            padding: 80px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .footer-col p, .footer-col a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* --- Animações (Scroll Reveal) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* --- Mobile --- */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-list {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--bg-main);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s ease;
+                z-index: 1001;
+            }
+
+            .nav-list.active {
+                right: 0;
+            }
+
+            .nav-list a {
+                font-size: 1.2rem;
+                margin: 20px 0;
+            }
+
+            .menu-toggle.active .bar:nth-child(1) {
+                transform: rotate(-45deg) translate(-4px, 4px);
+            }
+            .menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.active .bar:nth-child(3) {
+                transform: rotate(45deg) translate(-4px, -4px);
+            }
+
+            .hero {
+                background-attachment: scroll; /* Performance mobile */
+                text-align: center;
+            }
+
+            .hero::before {
+                background: rgba(255,255,255,0.85); /* Fundo mais sólido no mobile para leitura */
+            }
+
+            .hero-content {
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .portfolio-overlay {
+                opacity: 1;
+                background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <nav class="navbar">
+            <a href="#" class="logo">Lumina.</a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
+            <ul class="nav-list">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#services">Expertise</a></li>
+                <li><a href="#portfolio">Projetos</a></li>
+                <li><a href="#contact">Contactos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <h1 class="reveal">Projetando a essência do seu bem-viver.</h1>
+            <p class="reveal delay-1">Arquitetura contemporânea e design de interiores voltados para a criação de espaços que inspiram, acolhem e transcendem o comum.</p>
+            <div class="reveal delay-2">
+                <a href="#portfolio" class="btn btn-primary">Ver Projetos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços -->
+    <section id="services" class="section bg-alt">
+        <div class="container">
+            <h2 class="section-title reveal">Nossa Expertise</h2>
+            <p class="section-subtitle reveal">Do conceito à execução</p>
+            
+            <div class="grid-3">
+                <div class="service-card reveal delay-1">
+                    <div class="service-icon">01</div>
+                    <h3>Projetos Residenciais</h3>
+                    <p>Casas de alto padrão desenhadas para refletir a personalidade e o estilo de vida único de cada cliente, unindo estética e funcionalidade.</p>
+                </div>
+                <div class="service-card reveal delay-2">
+                    <div class="service-icon">02</div>
+                    <h3>Design de Interiores</h3>
+                    <p>Curadoria rigorosa de materiais, texturas e mobiliário para criar ambientes internos sofisticados, confortáveis e atemporais.</p>
+                </div>
+                <div class="service-card reveal delay-3">
+                    <div class="service-icon">03</div>
+                    <h3>Espaços Corporativos</h3>
+                    <p>Arquitetura estratégica para escritórios e lojas, visando a produtividade, o bem-estar e o fortalecimento da identidade da marca.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfólio -->
+    <section id="portfolio" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">Obras Recentes</h2>
+            <p class="section-subtitle reveal">Um olhar sobre as nossas criações</p>
+
+            <div class="portfolio-grid">
+                <!-- Projeto 1 -->
+                <div class="portfolio-item reveal delay-1">
+                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h4>Casa Horizonte</h4>
+                        <p>Residencial • Lisboa</p>
+                    </div>
+                </div>
+                
+                <!-- Projeto 2 -->
+                <div class="portfolio-item reveal delay-2">
+                    <img src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h4>Apartamento Nido</h4>
+                        <p>Interiores • Porto</p>
+                    </div>
+                </div>
+
+                <!-- Projeto 3 -->
+                <div class="portfolio-item reveal delay-3">
+                    <img src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h4>Villa Flora</h4>
+                        <p>Remodelação • Algarve</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col reveal">
+                    <h4>Lumina.</h4>
+                    <p>A transformar visões em espaços arquitetónicos de excelência desde 2018.</p>
+                </div>
+                <div class="footer-col reveal delay-1">
+                    <h4>Contactos</h4>
+                    <p>contacto@studiolumina.pt</p>
+                    <p>+351 912 345 678</p>
+                </div>
+                <div class="footer-col reveal delay-2">
+                    <h4>Endereço</h4>
+                    <p>Av. da Liberdade, 100 - 1º Esq<br>Lisboa, Portugal</p>
+                </div>
+                <div class="footer-col reveal delay-3">
+                    <h4>Social</h4>
+                    <a href="#">Instagram</a>
+                    <a href="#">Pinterest</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+            <div class="footer-bottom reveal">
+                <p>&copy; 2026 Studio Lumina Arquitetura. Desenvolvido profissionalmente.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.querySelector('.nav-list');
+        const navLinks = document.querySelectorAll('.nav-list a');
+
+        mobileMenu.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = navList.classList.contains('active') ? 'hidden' : '';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navList.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Header Scrolled effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer para animações suaves (Scroll Reveal)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
